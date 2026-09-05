@@ -72,7 +72,7 @@ async def upload_attachment(
     )
 
     return attachment.model_dump()
-    @app.get(
+@app.get(
     "/attachments/{attachment_id}/content",
     name="download_attachment",
 )
