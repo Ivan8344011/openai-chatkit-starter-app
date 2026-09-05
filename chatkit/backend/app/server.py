@@ -37,22 +37,21 @@ assistant_agent = Agent[AgentContext[dict[str, Any]]](
 
 
 
-
 class StarterChatServer(ChatKitServer[dict[str, Any]]):
     """Server implementation that keeps conversation state in memory."""
 
     def __init__(self) -> None:
-    self.store: MemoryStore = MemoryStore()
-    self.attachment_store = LocalAttachmentStore(self.store)
-    super().__init__(self.store, attachment_store=self.attachment_store)
+        self.store: MemoryStore = MemoryStore()
+        self.attachment_store = LocalAttachmentStore(self.store)
+        super().__init__(self.store, attachment_store=self.attachment_store)
     
-    self.thread_item_converter = CharlesThreadItemConverter(
-    attachment_store=self.attachment_store
-)
+        self.thread_item_converter = CharlesThreadItemConverter(
+        attachment_store=self.attachment_store
+        )
 
-@property
-def attachment_uploader(self) -> LocalAttachmentStore:
-    return self.attachment_store
+    @property
+    def attachment_uploader(self) -> LocalAttachmentStore:
+        return self.attachment_store
 
     async def respond(
         self,

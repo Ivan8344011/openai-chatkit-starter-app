@@ -104,14 +104,25 @@ class MemoryStore(Store[dict]):
         return Page(data=data, has_more=has_more, after=next_after)
 
     # Attachments are not implemented in the quickstart store
+    async def save_attachment(
+        self,
+        attachment: Attachment,
+        context: dict,
+    ) -> None:
+        self.attachments[attachment.id] = attachment
 
-   async def save_attachment(self, attachment: Attachment, context: dict) -> None:
-    self.attachments[attachment.id] = attachment
+    async def load_attachment(
+        self,
+        attachment_id: str,
+        context: dict,
+    ) -> Attachment:
+        if attachment_id not in self.attachments:
+            raise NotFoundError(f"Attachment {attachment_id} not found")
+        return self.attachments[attachment_id]
 
-   async def load_attachment(self, attachment_id: str, context: dict) -> Attachment:
-    if attachment_id not in self.attachments:
-        raise NotFoundError(f"Attachment {attachment_id} not found")
-    return self.attachments[attachment_id]
-
-   async def delete_attachment(self, attachment_id: str, context: dict) -> None:
-    self.attachments.pop(attachment_id, None)
+    async def delete_attachment(
+        self,
+        attachment_id: str,
+        context: dict,
+    ) -> None:
+        self.attachments.pop(attachment_id, None)
