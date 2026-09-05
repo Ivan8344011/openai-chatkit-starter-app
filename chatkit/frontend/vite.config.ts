@@ -11,6 +11,7 @@ export default defineConfig({
   server: {
     port: 3000,
     host: "0.0.0.0",
+    allowedHosts: ["openai-chatkit-starter-app-production-116c.up.railway.app"],
     proxy: {
       "/chatkit": {
         target: backendTarget,
