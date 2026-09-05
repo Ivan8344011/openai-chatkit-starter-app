@@ -27,44 +27,44 @@ class LocalAttachmentStore(AttachmentStore[dict[str, Any]]):
         self.store = store
         self.max_bytes = max_bytes
         self._files: dict[str, bytes] = {}
-        async def create_attachment(
-        self,
-        input: AttachmentCreateParams,
-        context: dict[str, Any],
-    ) -> Attachment:
-            self._validate_size(input.size)
-            self._validate_mime_type(input.mime_type)
+    async def create_attachment(
+    self,
+    input: AttachmentCreateParams,
+    context: dict[str, Any],
+) -> Attachment:
+        self._validate_size(input.size)
+        self._validate_mime_type(input.mime_type)
 
-            request = self._require_request(context)
+        request = self._require_request(context)
 
-            attachment_id = self.generate_attachment_id(input.mime_type, context)
+        attachment_id = self.generate_attachment_id(input.mime_type, context)
 
-            upload_url = self._build_url(
-                request,
-                "upload_attachment",
-                attachment_id,
-            )
+        upload_url = self._build_url(
+            request,
+            "upload_attachment",
+            attachment_id,
+        )
 
-            preview_url = self._build_url(
-                request,
-                "download_attachment",
-                attachment_id,
-            )
+        preview_url = self._build_url(
+            request,
+            "download_attachment",
+            attachment_id,
+        )
 
-            attachment = ImageAttachment(
-                id=attachment_id,
-                name=input.name,
-                mime_type=input.mime_type,
-                upload_descriptor=AttachmentUploadDescriptor(
-                    url=upload_url,
-                    method="POST",
-                ),
-                preview_url=preview_url,
-            )
+        attachment = ImageAttachment(
+            id=attachment_id,
+            name=input.name,
+            mime_type=input.mime_type,
+            upload_descriptor=AttachmentUploadDescriptor(
+                url=upload_url,
+                method="POST",
+            ),
+            preview_url=preview_url,
+        )
 
-            self._files.pop(attachment_id, None)
+        self._files.pop(attachment_id, None)
 
-            return attachment
+        return attachment
     async def delete_attachment(
         self,
         attachment_id: str,
