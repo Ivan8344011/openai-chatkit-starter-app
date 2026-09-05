@@ -1,0 +1,16 @@
+{
+  "name": "Charles",
+  "short_name": "Charles",
+  "description": "Your everyday AI assistant.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#dc2626",
+  "icons": [
+    {
+      "src": "/charles-icon.png",
+      "type": "image/png",
+      "sizes": "1254x1254"
+    }
+  ]
+}
