@@ -15,7 +15,7 @@ class MemoryStore(Store[dict]):
     def __init__(self):
         self.threads: dict[str, ThreadMetadata] = {}
         self.items: dict[str, list[ThreadItem]] = defaultdict(list)
-
+        self.attachments: dict[str, Attachment] = {}
     async def load_thread(self, thread_id: str, context: dict) -> ThreadMetadata:
         if thread_id not in self.threads:
             raise NotFoundError(f"Thread {thread_id} not found")
@@ -105,11 +105,13 @@ class MemoryStore(Store[dict]):
 
     # Attachments are not implemented in the quickstart store
 
-    async def save_attachment(self, attachment: Attachment, context: dict) -> None:
-        raise NotImplementedError()
+   async def save_attachment(self, attachment: Attachment, context: dict) -> None:
+    self.attachments[attachment.id] = attachment
 
-    async def load_attachment(self, attachment_id: str, context: dict) -> Attachment:
-        raise NotImplementedError()
+   async def load_attachment(self, attachment_id: str, context: dict) -> Attachment:
+    if attachment_id not in self.attachments:
+        raise NotFoundError(f"Attachment {attachment_id} not found")
+    return self.attachments[attachment_id]
 
-    async def delete_attachment(self, attachment_id: str, context: dict) -> None:
-        raise NotImplementedError()
+   async def delete_attachment(self, attachment_id: str, context: dict) -> None:
+    self.attachments.pop(attachment_id, None)

@@ -10,6 +10,8 @@ from chatkit.server import ChatKitServer
 from chatkit.types import ThreadMetadata, ThreadStreamEvent, UserMessageItem
 
 from .memory_store import MemoryStore
+from .attachment_store import LocalAttachmentStore
+from .thread_item_converter import CharlesThreadItemConverter
 from agents import Agent
 
 
@@ -40,8 +42,17 @@ class StarterChatServer(ChatKitServer[dict[str, Any]]):
     """Server implementation that keeps conversation state in memory."""
 
     def __init__(self) -> None:
-        self.store: MemoryStore = MemoryStore()
-        super().__init__(self.store)
+    self.store: MemoryStore = MemoryStore()
+    self.attachment_store = LocalAttachmentStore(self.store)
+    super().__init__(self.store, attachment_store=self.attachment_store)
+    
+    self.thread_item_converter = CharlesThreadItemConverter(
+    attachment_store=self.attachment_store
+)
+
+@property
+def attachment_uploader(self) -> LocalAttachmentStore:
+    return self.attachment_store
 
     async def respond(
         self,
@@ -57,7 +68,7 @@ class StarterChatServer(ChatKitServer[dict[str, Any]]):
             context=context,
         )
         items = list(reversed(items_page.data))
-        agent_input = await simple_to_agent_input(items)
+        agent_input = await self.thread_item_converter.to_agent_input(items)
 
         agent_context = AgentContext(
             thread=thread,

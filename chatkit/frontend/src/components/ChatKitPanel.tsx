@@ -20,14 +20,23 @@ const [colorScheme, setColorScheme] = useState<"light" | "dark">(
 }, []);
   const chatkit = useChatKit({
     
-    api: { url: CHATKIT_API_URL, domainKey: CHATKIT_API_DOMAIN_KEY },
+    api: {
+  url: CHATKIT_API_URL,
+  domainKey: CHATKIT_API_DOMAIN_KEY,
+  uploadStrategy: { type: "two_phase" },
+},
     theme: {
   colorScheme: colorScheme,
 },
     composer: {
       placeholder: "Ask Charles anything...",
-      // File uploads are disabled for the demo backend.
-      attachments: { enabled: false },
+     attachments: {
+  enabled: true,
+  maxSize: 10 * 1024 * 1024,
+  accept: {
+    "image/*": [".png", ".jpg", ".jpeg", ".webp"],
+  },
+},
     },
   });
 
