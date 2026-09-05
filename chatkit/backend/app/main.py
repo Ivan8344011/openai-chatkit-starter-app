@@ -33,10 +33,11 @@ async def chatkit_endpoint(request: Request) -> Response:
     if hasattr(result, "json"):
         return Response(content=result.json, media_type="application/json")
     return JSONResponse(result)
-    @app.api_route(
-    "/attachments/{attachment_id}/upload",
-    methods=["POST", "PUT"],
-    name="upload_attachment",
+   
+@app.api_route(
+       "/attachments/{attachment_id}/upload",
+       methods=["POST", "PUT"],
+       name="upload_attachment",
 )
 async def upload_attachment(
     attachment_id: str,
