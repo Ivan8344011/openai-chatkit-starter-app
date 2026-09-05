@@ -2,9 +2,9 @@ import { ChatKitPanel } from "./components/ChatKitPanel";
 
 export default function App() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-end bg-slate-100 dark:bg-slate-950">
-      <div className="mx-auto w-full max-w-5xl">
-        <header className="mb-4 text-center">
+    <main className="min-h-dvh bg-white dark:bg-slate-950">
+            <div className="mx-auto flex min-h-dvh w-full max-w-md flex-col">
+        <header className="shrink-0 px-4 pb-3 pt-4 text-center">
   <h1 className="mt-1 text-3xl font-semibold text-slate-900 dark:text-white">
     Charles
   </h1>
@@ -12,7 +12,10 @@ export default function App() {
     Your everyday AI assistant.
   </p>
 </header>
-        <ChatKitPanel />
+<div className="min-h-0 flex-1">
+  <ChatKitPanel />
+</div>
+       
       </div>
     </main>
   );
