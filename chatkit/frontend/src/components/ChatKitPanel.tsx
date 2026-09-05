@@ -2,7 +2,10 @@ import { ChatKit, useChatKit } from "@openai/chatkit-react";
 import { CHATKIT_API_DOMAIN_KEY, CHATKIT_API_URL } from "../lib/config";
 import { useEffect, useState } from "react";
 export function ChatKitPanel() {
-useEffect(() => {
+const [colorScheme, setColorScheme] = useState<"light" | "dark">(
+  window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+);
+  useEffect(() => {
   const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
 
   const handleChange = (event: MediaQueryListEvent) => {
