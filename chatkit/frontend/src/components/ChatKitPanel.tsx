@@ -5,6 +5,7 @@ export function ChatKitPanel() {
   const chatkit = useChatKit({
     api: { url: CHATKIT_API_URL, domainKey: CHATKIT_API_DOMAIN_KEY },
     composer: {
+      placeholder: "Ask Charles anything...",
       // File uploads are disabled for the demo backend.
       attachments: { enabled: false },
     },
