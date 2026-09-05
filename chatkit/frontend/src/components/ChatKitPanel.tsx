@@ -1,9 +1,26 @@
 import { ChatKit, useChatKit } from "@openai/chatkit-react";
 import { CHATKIT_API_DOMAIN_KEY, CHATKIT_API_URL } from "../lib/config";
-
+import { useEffect, useState } from "react";
 export function ChatKitPanel() {
+useEffect(() => {
+  const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+  const handleChange = (event: MediaQueryListEvent) => {
+    setColorScheme(event.matches ? "dark" : "light");
+  };
+
+  mediaQuery.addEventListener("change", handleChange);
+
+  return () => {
+    mediaQuery.removeEventListener("change", handleChange);
+  };
+}, []);
   const chatkit = useChatKit({
+    
     api: { url: CHATKIT_API_URL, domainKey: CHATKIT_API_DOMAIN_KEY },
+    theme: {
+  colorScheme: colorScheme,
+},
     composer: {
       placeholder: "Ask Charles anything...",
       // File uploads are disabled for the demo backend.
