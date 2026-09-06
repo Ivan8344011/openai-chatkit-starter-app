@@ -129,13 +129,14 @@ class LocalAttachmentStore(AttachmentStore[dict[str, Any]]):
         request: Request,
         route_name: str,
         attachment_id: str,
-    ):
-        return str(
-            request.url_for(
-                route_name,
-                attachment_id=attachment_id,
-            )
-        )
+    ) -> str:
+        if route_name == "upload_attachment":
+            return f"/attachments/{attachment_id}/upload"
+
+        if route_name == "download_attachment":
+            return f"/attachments/{attachment_id}/content"
+
+        raise ValueError(f"Unknown attachment route: {route_name}")
 
     def _validate_mime_type(self, mime_type: str) -> None:
         if not mime_type.startswith("image/"):
